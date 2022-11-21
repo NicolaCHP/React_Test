@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Mon titre h1
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+
+        // création d'un composant
+        const Form = () =>
+            {
+                const [nameList, setNameList] = React.useState([]);
+                const [message, setMessage] = React.useState('');
+
+                const handleChangeNameList = (event) => {
+                    event.preventDefault();
+                    let value = document.getElementById("name").value.toUpperCase()
+                    if(value == '') setMessage("Merci de taper un nom")
+                    else {
+                        if( nameList.indexOf(value) === -1){
+                            setMessage("Merci pour votre modification !")
+                            let nameL = nameList
+                            nameL.push(value)
+                            setNameList(nameL)
+                        }
+                        else setMessage("L'utilisateur "+value+" existe déjà")
+                    }
+                }
+
+                const ShowName = () =>{
+                    console.log(nameList)
+                    return(
+                        <ul>
+                        { nameList.map((item,i) => <li key={i}> {item} </li>) }
+                        </ul>
+                    )
+                }
+
+                const ShowMsg = () => {
+                    return(
+                        <>
+                            <p>{message}</p>
+                        </>
+                    )
+
+                }
+
+                return(
+                    <>
+                    <ShowMsg />
+                    <form>
+                        <label>Username:</label><br/>
+                        <input type="text" id="name" name="name" required="required"/>
+                        <button onClick={handleChangeNameList}>Add</button>   
+                    </form>
+                    <ShowName />
+                    </>
+                )
+            }
+
+            //afficher cet élément dans la div
+            ReactDOM.createRoot(document.getElementById("root")).render(<Form />);
+    </script>
+
+    
+</body>
+</html>

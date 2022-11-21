@@ -1,0 +1,142 @@
+<!DOCvalue html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Mon titre h1
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+
+        let res = '';
+
+        // création d'un composant
+        const Calculette = () =>
+            {
+                const initialState = {result : '', value1 : "0", value2 : "0", operator : '', input : '0'}
+                
+
+                const reducer= (state, action)=> {
+                    switch(action.type){
+                        //Opération
+                        case '+' :
+                            return {...state, result : state.value1+state.value2}
+                        case '-' :
+                            return {...state, result : state.value1-state.value2 }
+                        case '*' :
+                            return {...state, result : state.value1*state.value2 }
+                        case 'reset' :
+                            return {...state, result : '', value1 : "0", value2 : "0", operator : '', input : "0" }
+                        //Chiffre
+                        case 'chfr' :
+                            if(state.result == '' && state.operator == '') {return {...state, value1 : state.value1+action.value, input : state.input+action.value}}
+                            if(state.operator == '' && state.result != '') {return {...state, value1 : action.value, result : '', input : state.input+action.value}}
+                            if(state.operator != '') {return {...state, value2 : state.value2+action.value, input : state.input+action.value}}
+
+                        case 'operator' :
+                            return {...state, operator : action.value}
+                        case '=' :
+                            let v1 = parseInt(state.value1)
+                            let v2 = parseInt(state.value2)
+                            let obj = { value2 : "0", operator : ''}
+                            if(state.operator== "+"){
+                                let res = v1+v2;
+                                return {...state, result : res , value1 : res, ...obj, input : res }
+                            }
+                            else if(state.operator== "-"){
+                                let res = v1-v2
+                                return {...state, result : res, value1 : res, ...obj, input : res} 
+                            } 
+                            else if(state.operator== "*"){
+                                res=v1*v2;
+                                return {...state, result : res,  value1 : res, ...obj }
+                            }
+                            
+                        case "input" :
+                            return {...state, input : action.value}
+
+
+                    }
+                }
+
+                const handleChange = ( (event) => {
+                    let lastChar = event.target.value.split('').pop();
+                    let value = event.target.value.slice(0,-1);
+                    let Operator = ["+","-","*"];
+                    dispatch({type : 'input', value : event.target.value})
+
+                    if( Operator.includes(lastChar)){
+                        dispatch({value : value, type : "chfr"})
+                        dispatch({value: lastChar, type : "operator"})
+                    }
+                    if(lastChar == "="){
+                        value = event.target.value.split(state.operator)[1].slice(0,-1)
+                        dispatch({value: value, type : "chfr"})
+                        dispatch({type : "="})
+                    }
+                })
+
+                const [state, dispatch] = React.useReducer(reducer, initialState)
+
+                return(
+                    <>
+                    <p> Résultat : {state.result}</p>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td colSpan="3"><input value={state.input} onChange={handleChange}/></td>
+                        </tr>
+                        <tr>
+                            <td><button onClick={() => dispatch({value : "1", type : "chfr"})}>1</button></td>
+                            <td><button onClick={() => dispatch({value : "2", type : "chfr"})}>2</button></td>
+                            <td><button onClick={() => dispatch({value : "3", type : "chfr"})}>3</button></td>
+                        </tr>
+                        <tr>
+                            <td><button onClick={() => dispatch({value : "4", type : "chfr"})}>4</button></td>
+                            <td><button onClick={() => dispatch({value : "5", type : "chfr"})}>5</button></td>
+                            <td><button onClick={() => dispatch({value : "6", type : "chfr"})}>6</button></td>
+                        </tr>
+                        <tr>
+                            <td><button onClick={() => dispatch({value : "7", type : "chfr"})}>7</button></td>
+                            <td><button onClick={() => dispatch({value : "8", type : "chfr"})}>8</button></td>
+                            <td><button onClick={() => dispatch({value : "9", type : "chfr"})}>9</button></td>
+                        </tr>
+                        <tr>
+                            <td><button onClick={() => dispatch({value : "0", type : "chfr"})}>0</button></td>
+                        </tr>
+                        <tr>
+                            <td><button onClick={() => dispatch({value : "+", type : "operator"})}>+</button></td>
+                            <td><button onClick={() => dispatch({value : "-", type : "operator"})}>-</button></td>
+                            <td><button onClick={() => dispatch({value : "*", type : "operator"})}>X</button></td>
+                        </tr>
+                        <tr>
+                            <td><button onClick={() => dispatch({type : "reset"})}>Reset</button></td>
+                            <td><button onClick={() => dispatch({type : "="})}>=</button></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                    </>
+                )
+            }
+
+            //afficher cet élément dans la div
+            ReactDOM.createRoot(document.getElementById("root")).render(<Calculette />);
+    </script>
+
+    
+</body>
+</html>

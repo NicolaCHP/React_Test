@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React : EXO 4</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Horloge
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+
+        function getTime(){
+            let now = new Date();
+            let heure   = now.getHours();
+            let minute  = now.getMinutes();
+            let seconde = now.getSeconds();
+            return heure+"h "+minute+"min "+seconde+"s";
+        }
+
+        // Utilsation du cdn babel
+        const Clock = () =>{
+                const [time, setTime] = React.useState(getTime);
+
+                setTimeout(() => {
+                    setTime(getTime());
+                }, 1000);
+
+            return (
+                <p> {time} </p>
+            )
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<Clock />);
+
+
+    </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Mon titre h1
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+
+        // création d'un composant
+        const Hello = () =>
+            {
+                const [compteur, setCompteur] = React.useState(0);
+
+                const plus1 = () => {
+                    if(compteur < 0)setCompteur(1)
+                    else setCompteur(compteur+1)
+                }
+
+                const moins1 = () => {
+                    setCompteur(compteur-1)
+                }
+
+                return(
+                    <>
+                    
+                    {compteur < 0 ?
+                        <>
+                        <p>Compteur ne doit pas être négatif !</p>
+                        </>
+                        :  <button onClick={moins1}>-</button> }
+
+                        {compteur < 0 ? <p>0</p>
+                        :<p>{compteur}</p>}
+                    
+
+                    <button onClick={plus1}>+</button>
+                    </>
+                )
+            }
+
+            //afficher cet élément dans la div
+            ReactDOM.createRoot(document.getElementById("root")).render(<Hello />);
+    </script>
+
+    
+</body>
+</html>

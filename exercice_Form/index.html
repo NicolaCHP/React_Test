@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Mon titre h1
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+
+        // création d'un composant
+        const Form = () =>
+            {
+                const [number, setNumber] = React.useState(0);
+                const [change, setChange] = React.useState(false);
+
+                const handleChangeNumber = (event) => {
+                    setChange(true);
+                    setNumber(parseInt(document.getElementById("number-select").value));
+                }
+
+                const Multiple = () =>{
+                    if(number != 0){
+                        let i=0;
+                        let res = [];
+                        while(number*i < 100){
+                            res.push(number*i);
+                            i++;
+                        }
+                        return(
+                            <ul>
+                            { res.map((item,i) => <li key={i}> {item} </li>) }
+                            </ul>
+                        )
+                    }
+                }
+
+
+                return(
+                    <>
+                    {console.log(change)}
+                    {change == true && number == 0 
+                        ? <p>Attention vous n'avez pas choisi de multiple</p>
+                    : change == true && number !=0 
+                        ?<p>Merci pour ce choix</p>
+                    :<></>
+                    }
+                    <form>
+                        <select name="number" id="number-select">
+                            <option value="0">Aucune</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </form>
+                    <button onClick={handleChangeNumber}>Calculer</button>
+                    <Multiple />
+                    </>
+                )
+            }
+
+            //afficher cet élément dans la div
+            ReactDOM.createRoot(document.getElementById("root")).render(<Form />);
+    </script>
+
+    
+</body>
+</html>

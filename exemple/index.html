@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Mon titre h1
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+            //créer un dom réactif
+            const title = React.createElement('h2',null, "Mon titre h2", React.createElement('span', {className:'red'}, "coucou"));
+
+            // Utilsation du cdn babel
+            const title2 = (
+                <h2> Mon titre h2
+                    <span className = "red"> Coucou </span>
+                </h2>
+            )
+            // Création d'un autre composant
+            const Form = ({children}) => {
+                return (
+                    <form>
+                        <input type="text" />
+                        {children}
+                    </form>
+                )
+            }
+
+             // Création d'un autre composant
+            const Bonjour = ({prenom}) => {
+                return (
+                    <p>Bonjour {prenom}</p>
+                )
+            }
+
+            // création d'un composant
+            const Hello = () =>
+            {
+                let courses = ["pain","boursin","beurre"];
+
+                return(
+                    <>
+                    <p className="red" style={{color:"red"}} id="bonjour"> Bonjour ! </p>
+                    <ul>
+                        {courses.map((item,i) => <li key={i}> {item} </li>)}
+                    </ul>
+                    <Form> 
+                        <input type="text" placeholder="beuh"/>
+                    </Form>
+                    <Bonjour prenom="Cécille" />
+                    </>
+                )
+            }
+
+            //afficher cet élément dans la div
+            ReactDOM.createRoot(document.getElementById("root")).render(<Hello />);
+    </script>
+
+    
+</body>
+</html>

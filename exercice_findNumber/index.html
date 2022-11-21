@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Mon titre h1
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+
+        const findNbr = Math.floor(Math.random() * 98)+1;
+
+        // création d'un composant
+        const Form = () =>
+            {
+                //La liste est composé du nbrMin, du nbrMax 
+                const [listNbr, setListNbr] = React.useState([0,100]);
+                const [compteur, setCompteur] = React.useState(0);
+                const[error, setError] = React.useState('');
+
+                React.useEffect(()=> {
+                    setCompteur(compteur+1)
+                }, [listNbr,error])
+
+                const handleChangeListNbr = (event) => {
+                    event.preventDefault();
+                    let value= parseInt(document.getElementById("nbr").value);
+                    //condition de victoire
+                    if(value > 100 ||value < 0) {setError(<p> Merci de mettre en nombrecompris entre 0 et 100</p>)}
+                    else{
+                        if(value == findNbr) listNbr[0] = listNbr[1]
+                        else{
+                            if(value < findNbr) setListNbr([value,listNbr[1]])
+                            if(value > findNbr) setListNbr([listNbr[0],value])
+                        }
+                    }
+                    
+                }
+                
+
+                return(
+                    <>
+                    <form>
+                        <input type="number" id="nbr" min="0" max ="100" required="required"/>
+                        <button onClick={handleChangeListNbr}>ok</button>   
+                    </form>
+                    {error}
+                    {listNbr[0] == listNbr[1] 
+                        ?<p>BRAVO ! Vous avez trouvé en {compteur} essais</p>
+                        : <p> Le nombre est compris entre {listNbr[0]} et {listNbr[1] } </p>
+                    }
+                    </>
+                )
+            }
+
+            //afficher cet élément dans la div
+            ReactDOM.createRoot(document.getElementById("root")).render(<Form />);
+    </script>
+
+    
+</body>
+</html>

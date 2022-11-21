@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+</head>
+<body>
+    <h1>
+        Mon titre h1
+    </h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+        
+        // création d'un composant
+        const App = () =>
+            {
+                const [count, setCount] = React.useState(0);
+                const [msg, setMsg]= React.useState("Ceci est un message")
+            
+                //montage et update
+                React.useEffect(() => {
+                    console.log('le compteur est  à '+count);
+                })
+
+                //montage et update de message
+                React.useEffect(() => {
+                    console.log(msg);
+                }, [msg])
+
+                //montage que au montage
+                React.useEffect(() => {
+                    console.log("chargement en cours");
+                }, [])
+
+
+
+                return(
+                    <>
+                    <button onClick={() => setCount(count+1)}> Ajoute 1 </button>
+                    <input type="text" value={msg} onChange={(e) => setMsg(e.target.value)}/>
+                    </>
+                )
+            }
+            //afficher cet élément dans la div
+            ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+
+    
+</body>
+</html>
